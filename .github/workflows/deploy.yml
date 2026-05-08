@@ -1,0 +1,96 @@
+name: Build & Deploy
+
+on:
+  push:
+    # Only `staging` for now. The current prod `landingpage-depl` is a different
+    # mechanism (configmap-mounted static HTML, no TLS). Prod cutover requires
+    # writing k8s-prod/ manifests + DNS + replacing the existing deployment.
+    # Add `main` here once that cutover is planned.
+    branches: [staging]
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Pick environment
+        id: env
+        run: |
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+            echo "namespace=shieldhedge-prod"   >> "$GITHUB_OUTPUT"
+            echo "deployment=landing-depl"      >> "$GITHUB_OUTPUT"
+            echo "manifests=k8s-prod"           >> "$GITHUB_OUTPUT"
+            echo "tag_prefix="                  >> "$GITHUB_OUTPUT"
+          else
+            echo "namespace=shieldhedge-staging" >> "$GITHUB_OUTPUT"
+            echo "deployment=landing-depl"       >> "$GITHUB_OUTPUT"
+            echo "manifests=k8s-staging"         >> "$GITHUB_OUTPUT"
+            echo "tag_prefix=staging-"           >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Set image tag
+        id: tag
+        run: echo "tag=${{ steps.env.outputs.tag_prefix }}${GITHUB_SHA::12}-${{ github.run_number }}" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build & push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.env.outputs.tag_prefix }}latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Write kubeconfig
+        run: |
+          mkdir -p "$HOME/.kube"
+          echo "${{ secrets.KUBECONFIG }}" | base64 -d > "$HOME/.kube/config"
+          chmod 600 "$HOME/.kube/config"
+
+      - name: Install kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: v1.31.0
+
+      - name: Ensure GHCR pull secret
+        run: |
+          kubectl -n "${{ steps.env.outputs.namespace }}" create secret docker-registry ghcr-pull \
+            --docker-server=${{ env.REGISTRY }} \
+            --docker-username=${{ github.actor }} \
+            --docker-password=${{ secrets.GITHUB_TOKEN }} \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Apply manifests
+        env:
+          IMAGE_TAG: ${{ steps.tag.outputs.tag }}
+          MANIFESTS: ${{ steps.env.outputs.manifests }}
+        run: |
+          sed "s|__IMAGE_TAG__|${IMAGE_TAG}|g" "$MANIFESTS/deployment.yaml" | kubectl apply -f -
+          kubectl apply -f "$MANIFESTS/service.yaml"
+          kubectl apply -f "$MANIFESTS/ingress.yaml"
+
+      - name: Wait for rollout
+        run: |
+          kubectl -n "${{ steps.env.outputs.namespace }}" rollout status \
+            deployment/"${{ steps.env.outputs.deployment }}" --timeout=5m
