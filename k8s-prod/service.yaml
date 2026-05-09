@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: landing-svc
+  namespace: shieldhedge-prod
+  labels:
+    app: landing
+spec:
+  type: ClusterIP
+  selector:
+    app: landing
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

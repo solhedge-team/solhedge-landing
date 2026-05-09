@@ -2,11 +2,7 @@ name: Build & Deploy
 
 on:
   push:
-    # Only `staging` for now. The current prod `landingpage-depl` is a different
-    # mechanism (configmap-mounted static HTML, no TLS). Prod cutover requires
-    # writing k8s-prod/ manifests + DNS + replacing the existing deployment.
-    # Add `main` here once that cutover is planned.
-    branches: [staging]
+    branches: [main, staging]
   workflow_dispatch:
 
 env:
