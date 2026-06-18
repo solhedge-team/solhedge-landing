@@ -6,7 +6,7 @@ export function Footer() {
           <div>
             <div className="flex items-center gap-3">
               <img src="/logo-mini.png" alt="" className="h-8 w-8" />
-              <span className="font-display text-lg font-semibold tracking-tight">SolHedge</span>
+              <span className="font-display text-lg font-semibold tracking-tight -ml-2">SolHedge</span>
             </div>
             <p className="mt-5 max-w-sm font-body text-sm text-text-muted">
               Secure your LPs in seconds, hedge like a pro. With SolHedge, finally volatility doesn't scare you anymore.

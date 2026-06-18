@@ -14,8 +14,8 @@ export function Header() {
     <header className="sticky top-0 z-50 border-b border-white/[0.05] bg-surface-900/70 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <a href="#top" className="flex items-center gap-3 transition-opacity hover:opacity-80">
-          <img src="/logo-mini.png" alt="" className="h-8 w-8" />
-          <span className="font-display text-lg font-semibold tracking-tight">
+          <img src="/logo-mini.png" alt="" className="h-7 w-7" />
+          <span className="font-display text-lg font-semibold tracking-tight -ml-2">
             SolHedge
           </span>
           <span className="hidden font-body text-xs text-text-muted sm:inline mt-1">
