@@ -44,7 +44,7 @@ export function Growth() {
   }, [])
 
   return (
-    <section className="relative overflow-hidden px-6 py-40">
+    <section className="relative overflow-hidden px-6 py-32">
       <div className="pointer-events-none absolute inset-0 grid-pattern opacity-20 [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_70%)]" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[600px] w-[600px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-gradient-to-r from-brand-purple/10 via-brand-blue/10 to-brand-cyan/10 blur-[160px]" />
 

@@ -18,7 +18,7 @@ export function Header() {
           <span className="font-display text-lg font-semibold tracking-tight">
             SolHedge
           </span>
-          <span className="hidden font-body text-xs text-text-muted sm:inline">
+          <span className="hidden font-body text-xs text-text-muted sm:inline mt-1">
             — All LPs, One Shield
           </span>
         </a>

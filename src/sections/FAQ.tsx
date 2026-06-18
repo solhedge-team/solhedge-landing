@@ -39,7 +39,7 @@ export function FAQ() {
   const [open, setOpen] = useState<number | null>(0)
 
   return (
-    <section id="faq" className="relative px-6 py-32">
+    <section id="faq" className="relative px-6 py-20">
       <div className="mx-auto max-w-3xl">
         <div className="text-center">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-brand-cyan">FAQ</p>

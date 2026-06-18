@@ -45,7 +45,7 @@ const FEATURES = [
 
 export function WhySolHedge() {
   return (
-    <section id="why" className="relative px-6 py-32">
+    <section id="why" className="relative px-6 py-20">
       <div className="mx-auto max-w-6xl">
         <div className="max-w-3xl">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-brand-cyan">Why SolHedge</p>

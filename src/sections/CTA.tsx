@@ -4,7 +4,7 @@ const APP_URL = 'https://app.solhedge.xyz'
 
 export function CTA() {
   return (
-    <section className="relative px-6 py-32">
+    <section className="relative px-6 py-20">
       <div className="mx-auto max-w-5xl">
         <div className="relative rounded-3xl p-[1px]">
           <div className="conic-border absolute inset-0 rounded-3xl opacity-60" />

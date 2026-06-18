@@ -23,7 +23,7 @@ const QUOTES = [
 
 export function Testimonials() {
   return (
-    <section id="testimonials" className="relative px-6 py-32">
+    <section id="testimonials" className="relative px-6 py-20">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
           <p className="font-mono text-xs uppercase tracking-[0.2em] text-brand-cyan">Testimonials</p>
@@ -34,7 +34,7 @@ export function Testimonials() {
 
         <div className="mt-16 grid gap-5 md:grid-cols-3">
           {QUOTES.map((q, i) => (
-            <Reveal key={q.author} delay={i * 0.12} className={i === 1 ? 'md:mt-10' : ''}>
+            <Reveal key={q.author} delay={i * 0.12} className='md:mt-10'>
             <figure
               className={`group relative h-full overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-7 transition-transform hover:-translate-y-1`}
             >
