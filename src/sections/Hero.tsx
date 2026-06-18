@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'motion/react'
 import Aurora from '@/reactbits/Aurora'
 import { Ticker } from '@/components/Ticker'
@@ -15,6 +16,24 @@ const headlineVariants = {
 }
 
 export function Hero() {
+  const [copied, setCopied] = useState(false)
+
+  const copyContractAddress = () => {
+    const contractAddress = '4bR9nvZYq6gpScGFEx3Qr2WcTtnTSXrJebw18FrTs11i'
+    navigator.clipboard.writeText(contractAddress)
+    setCopied(true)
+  }
+
+  useEffect(() => {
+    if (!copied) return
+
+    const timeoutId = window.setTimeout(() => {
+      setCopied(false)
+    }, 1600)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [copied])
+
   return (
     <>
       <section
@@ -88,8 +107,9 @@ export function Hero() {
             <button
               type="button"
               className="rounded-full border border-white/[0.08] bg-white/[0.03] px-7 py-3 font-body text-sm font-medium text-text-primary backdrop-blur-sm transition-colors hover:bg-white/[0.06]"
+              onClick={copyContractAddress}
             >
-              📋 Copy CA
+              {copied ? '📋 Copied' : '📋 Copy CA'}
             </button>
           </motion.div>
 
@@ -113,7 +133,7 @@ export function Hero() {
         </motion.div>
       </section>
 
-      <section className="relative overflow-hidden px-6 pb-32 pt-24">
+      <section className="relative overflow-hidden px-6 pb-16 pt-24">
         <motion.div
           initial={{ opacity: 0, y: 60, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}

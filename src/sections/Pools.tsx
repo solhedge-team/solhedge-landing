@@ -30,7 +30,7 @@ const UNLOCK_STEPS = [
 
 export function Pools() {
   return (
-    <section id='pools' className='relative px-6 py-32'>
+    <section id='pools' className='relative px-6 py-20'>
       <div className='mx-auto max-w-6xl'>
         <div className='flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-end'>
           <div>
@@ -49,7 +49,28 @@ export function Pools() {
           </p>
         </div>
 
-        <div className='mt-14 grid gap-4 sm:grid-cols-3'>
+        <div className='mt-12 overflow-hidden rounded-3xl border border-brand-gold/30 bg-gradient-to-br from-brand-gold/10 via-surface-800 to-surface-900 p-10'>
+          <div className='flex flex-col items-start justify-between gap-6 md:flex-row md:items-center'>
+            <div className='max-w-xl'>
+              <p className='font-mono text-xs uppercase tracking-[0.2em] text-brand-gold'>
+                Featured Pool
+              </p>
+              <h3 className='mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl'>
+                GOLD / USDC Pool
+              </h3>
+              <p className='mt-3 font-body text-sm text-text-secondary'>
+                Exposure to on-chain gold paired with USDC. Protected LP for
+                investors who want defense against both crypto and fiat
+                volatility.
+              </p>
+            </div>
+            <div className='flex h-32 w-32 items-center justify-center rounded-full border border-brand-gold/40 bg-brand-gold/10'>
+              <span className='font-display text-5xl'>🪙</span>
+            </div>
+          </div>
+        </div>
+
+        <div className='mt-8 grid gap-4 sm:grid-cols-3'>
           {POOLS.map((p, i) => (
             <Reveal key={p.name} delay={i * 0.1}>
               <div className='group relative h-full overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] p-6 transition-all hover:-translate-y-1 hover:border-white/[0.14]'>
@@ -76,28 +97,7 @@ export function Pools() {
           ))}
         </div>
 
-        <div className='mt-16 overflow-hidden rounded-3xl border border-brand-gold/30 bg-gradient-to-br from-brand-gold/10 via-surface-800 to-surface-900 p-10'>
-          <div className='flex flex-col items-start justify-between gap-6 md:flex-row md:items-center'>
-            <div className='max-w-xl'>
-              <p className='font-mono text-xs uppercase tracking-[0.2em] text-brand-gold'>
-                Featured Pool
-              </p>
-              <h3 className='mt-3 font-display text-3xl font-semibold tracking-tight sm:text-4xl'>
-                GOLD / USDC Pool
-              </h3>
-              <p className='mt-3 font-body text-sm text-text-secondary'>
-                Exposure to on-chain gold paired with USDC. Protected LP for
-                investors who want defense against both crypto and fiat
-                volatility.
-              </p>
-            </div>
-            <div className='flex h-32 w-32 items-center justify-center rounded-full border border-brand-gold/40 bg-brand-gold/10'>
-              <span className='font-display text-5xl'>🪙</span>
-            </div>
-          </div>
-        </div>
-
-        <div className='mt-20'>
+        <div className='mt-12'>
           <h3 className='font-display text-2xl font-semibold tracking-tight sm:text-3xl'>
             How to Unlock Protected LP
           </h3>

@@ -31,7 +31,7 @@ export function Footer() {
           <div>
             <p className="font-mono text-xs uppercase tracking-wider text-text-muted">Resources</p>
             <ul className="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
-              <li><a href="https://dexscreener.com" target="_blank" rel="noreferrer" className="hover:text-text-primary">Dexscreener</a></li>
+              <li><a href="https://dexscreener.com/solana/boygugdgj9wf6ldhiphbjnvjfbov691rbmsl2a5njgsz" target="_blank" rel="noreferrer" className="hover:text-text-primary">Dexscreener</a></li>
               <li><a href="https://app.solhedge.xyz" className="hover:text-text-primary">Launch App</a></li>
             </ul>
           </div>
@@ -39,18 +39,18 @@ export function Footer() {
           <div>
             <p className="font-mono text-xs uppercase tracking-wider text-text-muted">Community</p>
             <ul className="mt-4 space-y-2.5 font-body text-sm text-text-secondary">
-              <li><a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-text-primary">Twitter / X</a></li>
-              <li><a href="https://discord.com" target="_blank" rel="noreferrer" className="hover:text-text-primary">Discord</a></li>
+              <li><a href="https://x.com/solhedge_prjct" target="_blank" rel="noreferrer" className="hover:text-text-primary">Twitter / X</a></li>
+              <li><a href="https://discord.com/invite/m4dF8uDftS" target="_blank" rel="noreferrer" className="hover:text-text-primary">Discord</a></li>
             </ul>
           </div>
         </div>
 
         <div className="mt-16 flex flex-col items-start justify-between gap-3 border-t border-white/[0.05] pt-6 sm:flex-row sm:items-center">
           <p className="font-body text-xs text-text-muted">
-            © 2025 SolHedge. All rights reserved. Built with ❤️ on Solana
+            © 2026 SolHedge. All rights reserved. Built with ❤️ on Solana
           </p>
           <p className="font-mono text-[10px] uppercase tracking-wider text-text-faint">
-            v1 · mainnet
+            v2 · mainnet
           </p>
         </div>
       </div>
