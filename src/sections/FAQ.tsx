@@ -2,81 +2,60 @@ import { useState } from 'react'
 
 const FAQS = [
   {
-    q: 'What is Protected LP?',
-    a: 'A liquidity position wrapped with automated hedging. SolHedge takes short exposure against your LP so the downside is covered while the upside still earns fees.',
+    q: 'Who holds my funds?',
+    a: 'You do. Each position sits in an escrow account tied to your wallet. SolHedge services can submit transactions for that escrow but cannot withdraw to another address.',
   },
   {
-    q: 'What is Easy Rebalance?',
-    a: 'Concentrated liquidity ranges drift out of market as prices move. Easy Rebalance repositions your LP automatically so you keep earning fees without manual intervention.',
+    q: 'What is the difference between Always Hedge and Auto Hedge?',
+    a: 'Always Hedge keeps the short open at all times and resizes it with the position. Auto Hedge opens the short only while the market-regime signal is bearish, which saves funding but accepts some exposure before the signal flips.',
   },
   {
-    q: 'What does Always Hedge mean?',
-    a: "A strategy that keeps a hedge open at all times, regardless of market direction. It's designed for depositors who prioritize downside protection over maximum upside.",
+    q: 'What return should I expect?',
+    a: 'Pool trading fees minus funding paid on the short, with much smaller drawdowns than an unhedged position. There is no guaranteed APY. The figures shown in the app are current pool rates, not forecasts.',
   },
   {
-    q: 'What is Auto Hedge (Signal-based)?',
-    a: 'AI-driven signals trigger hedge entry and exit only when the market calls for it. You get protection when volatility spikes and full LP exposure when it doesn\'t.',
+    q: 'What can still go wrong?',
+    a: 'Smart-contract risk on Meteora and the perpetual venue, funding turning expensive, slippage in fast moves, and residual impermanent loss between hedge resizes. Hedging lowers risk and does not remove it.',
   },
   {
-    q: 'Is my capital safe?',
-    a: 'Funds stay in audited on-chain escrow accounts you control. SolHedge never custodies your assets. Protected does not mean risk-free — smart contract risk and residual impermanent loss still apply.',
-  },
-  {
-    q: 'How do I get started?',
-    a: 'Connect a Solana wallet, pick a supported pool, and deposit USDC. The vault handles pool entry, hedging, and rebalancing from there.',
-  },
-  {
-    q: 'What returns should I expect?',
-    a: 'Returns vary with market conditions and pool activity. Protected LPs aim to capture LP fees with reduced drawdown versus unhedged LPing. No fixed APY is guaranteed.',
-  },
-  {
-    q: 'Is SolHedge live?',
-    a: 'Yes. SolHedge runs live on Solana mainnet with on-chain settlement and transparent positions.',
+    q: 'Which perpetual venue is used?',
+    a: 'Hedges are placed on a Solana-native perpetual exchange from an isolated signing service. The venue for each pool is shown in the app before you deposit.',
   },
 ]
 
 export function FAQ() {
   const [open, setOpen] = useState<number | null>(0)
-
   return (
-    <section id="faq" className="relative px-6 py-32">
-      <div className="mx-auto max-w-3xl">
-        <div className="text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-brand-cyan">FAQ</p>
-          <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
-            Questions, answered.
-          </h2>
-        </div>
-
-        <div className="mt-14 space-y-3">
+    <section id="faq" className="scroll-mt-16 border-b border-line">
+      <div className="wrap grid gap-8 py-16 lg:grid-cols-12 lg:py-24">
+        <h2 className="text-3xl font-semibold leading-[1.1] tracking-[-0.02em] lg:col-span-4 lg:text-4xl">
+          Questions
+        </h2>
+        <ul className="lg:col-span-7 lg:col-start-6">
           {FAQS.map((f, i) => {
             const isOpen = open === i
+            const id = `faq-${i}`
             return (
-              <div
-                key={f.q}
-                className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] transition-colors hover:border-white/[0.12]"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
-                >
-                  <span className="font-display text-base font-medium tracking-tight sm:text-lg">{f.q}</span>
-                  <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-surface-800 transition-transform ${isOpen ? 'rotate-45' : ''}`}>
-                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-text-secondary" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 5v14M5 12h14" />
+              <li key={f.q} className="border-b border-line">
+                <h3>
+                  <button
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={id}
+                    onClick={() => setOpen(isOpen ? null : i)}
+                    className="flex w-full items-center justify-between gap-6 py-5 text-left font-display text-lg font-medium tracking-tight hover:text-text-secondary"
+                  >
+                    {f.q}
+                    <svg viewBox="0 0 16 16" className={`h-4 w-4 shrink-0 text-text-muted transition-transform ${isOpen ? 'rotate-45' : ''}`} fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+                      <path d="M8 3v10M3 8h10" />
                     </svg>
-                  </span>
-                </button>
-                {isOpen && (
-                  <div className="px-6 pb-6 font-body text-sm text-text-secondary">
-                    {f.a}
-                  </div>
-                )}
-              </div>
+                  </button>
+                </h3>
+                <p id={id} hidden={!isOpen} className="pb-6 leading-relaxed text-text-secondary">{f.a}</p>
+              </li>
             )
           })}
-        </div>
+        </ul>
       </div>
     </section>
   )

@@ -1,60 +1,66 @@
-const APP_URL = 'https://app.solhedge.xyz'
-const DEXSCREENER_URL = 'https://dexscreener.com'
+import { useState } from 'react'
 
-const NAV_LINKS = [
-  { label: 'Why SolHedge?', href: '#why' },
+export const APP_URL = 'https://app.solhedge.xyz'
+
+const NAV = [
+  { label: 'How it works', href: '#how-it-works' },
+  { label: 'Strategies', href: '#strategies' },
   { label: 'Pools', href: '#pools' },
-  { label: 'How It Works', href: '#how' },
-  { label: 'Testimonials', href: '#testimonials' },
   { label: 'FAQ', href: '#faq' },
 ]
 
 export function Header() {
+  const [open, setOpen] = useState(false)
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.05] bg-surface-900/70 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="#top" className="flex items-center gap-3 transition-opacity hover:opacity-80">
-          <img src="/logo-mini.png" alt="" className="h-8 w-8" />
-          <span className="font-display text-lg font-semibold tracking-tight">
-            SolHedge
-          </span>
-          <span className="hidden font-body text-xs text-text-muted sm:inline">
-            — All LPs, One Shield
-          </span>
+    <header className="sticky top-0 z-50 border-b border-line bg-surface-900/90 backdrop-blur">
+      <div className="wrap flex items-center justify-between py-3.5">
+        <a href="#top" className="flex items-center gap-2.5">
+          <img src="/logo-mini.png" alt="" className="h-6 w-6" />
+          <span className="font-display text-[17px] font-semibold tracking-tight">SolHedge</span>
         </a>
 
-        <nav className="hidden items-center gap-1 md:flex">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="rounded-full px-3 py-1.5 font-body text-sm text-text-muted transition-colors hover:text-text-primary"
-            >
-              {link.label}
+        <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
+          {NAV.map((l) => (
+            <a key={l.href} href={l.href} className="text-sm text-text-secondary transition-colors hover:text-text-primary">
+              {l.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <a
-            href={DEXSCREENER_URL}
-            target="_blank"
-            rel="noreferrer"
-            className="hidden rounded-full px-3 py-1.5 font-body text-sm text-text-muted transition-colors hover:text-text-primary sm:inline"
-          >
-            Dexscreener
+        <div className="flex items-center gap-3">
+          <a href={APP_URL} className="btn btn-primary hidden !px-4 !py-2 text-sm sm:inline-flex">
+            Launch app
           </a>
-          <a
-            href={APP_URL}
-            className="group relative rounded-full px-5 py-2 font-body text-sm font-medium"
+          <button
+            type="button"
+            aria-expanded={open}
+            aria-controls="mobile-nav"
+            onClick={() => setOpen((o) => !o)}
+            className="rounded-full border border-surface-600 p-2 md:hidden"
           >
-            <span className="absolute inset-0 rounded-full bg-gradient-to-r from-brand-purple via-brand-blue to-brand-cyan p-[1px]">
-              <span className="flex h-full w-full items-center justify-center rounded-full bg-surface-900 transition-colors group-hover:bg-surface-800" />
-            </span>
-            <span className="relative text-text-primary">Try SolHedge now</span>
-          </a>
+            <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
+            <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
+              {open ? <path d="M4 4l12 12M16 4L4 16" /> : <path d="M3 6h14M3 10h14M3 14h14" />}
+            </svg>
+          </button>
         </div>
       </div>
+      {open && (
+        <nav id="mobile-nav" aria-label="Primary mobile" className="border-t border-line md:hidden">
+          <ul className="wrap flex flex-col gap-4 py-5">
+            {NAV.map((l) => (
+              <li key={l.href}>
+                <a href={l.href} onClick={() => setOpen(false)} className="text-base text-text-secondary">
+                  {l.label}
+                </a>
+              </li>
+            ))}
+            <li>
+              <a href={APP_URL} className="btn btn-primary">Launch app</a>
+            </li>
+          </ul>
+        </nav>
+      )}
     </header>
   )
 }
