@@ -1,81 +1,64 @@
-import { useState } from 'react'
-
 const FAQS = [
   {
-    q: 'What is Protected LP?',
-    a: 'A liquidity position wrapped with automated hedging. SolHedge takes short exposure against your LP so the downside is covered while the upside still earns fees.',
+    q: 'Is SolHedge custodial?',
+    a: 'No. Funds move directly between the liquidity pool and your wallet. The protocol never takes custody of your assets.',
   },
   {
-    q: 'What is Easy Rebalance?',
-    a: 'Concentrated liquidity ranges drift out of market as prices move. Easy Rebalance repositions your LP automatically so you keep earning fees without manual intervention.',
+    q: 'Do I need to understand perps or hedging?',
+    a: 'No. You deposit and activate; the AI manages range, hedging, rebalancing, and compounding for you.',
   },
   {
-    q: 'What does Always Hedge mean?',
-    a: "A strategy that keeps a hedge open at all times, regardless of market direction. It's designed for depositors who prioritize downside protection over maximum upside.",
+    q: 'What happens when the AI detects high risk?',
+    a: 'Liquidity may move back to stablecoins to protect capital. That stops fee accrual and realizes the position at that point, so it only happens when multiple risk signals confirm together.',
   },
   {
-    q: 'What is Auto Hedge (Signal-based)?',
-    a: 'AI-driven signals trigger hedge entry and exit only when the market calls for it. You get protection when volatility spikes and full LP exposure when it doesn\'t.',
+    q: 'How do I withdraw?',
+    a: 'Start a withdrawal from the dashboard. Open hedges close, liquidity is pulled from Meteora, and accrued fees plus principal return to your wallet, typically in one transaction.',
   },
   {
-    q: 'Is my capital safe?',
-    a: 'Funds stay in audited on-chain escrow accounts you control. SolHedge never custodies your assets. Protected does not mean risk-free — smart contract risk and residual impermanent loss still apply.',
-  },
-  {
-    q: 'How do I get started?',
-    a: 'Connect a Solana wallet, pick a supported pool, and deposit USDC. The vault handles pool entry, hedging, and rebalancing from there.',
+    q: 'Has SolHedge been audited?',
+    a: 'Smart contracts have been penetration tested by Daemon. The report is available to institutional counterparties on request.',
   },
   {
     q: 'What returns should I expect?',
-    a: 'Returns vary with market conditions and pool activity. Protected LPs aim to capture LP fees with reduced drawdown versus unhedged LPing. No fixed APY is guaranteed.',
+    a: 'Returns vary with market conditions and pool activity. SolHedge aims to capture LP fees with smaller drawdowns than unhedged LPing. No fixed APY is guaranteed.',
   },
   {
     q: 'Is SolHedge live?',
-    a: 'Yes. SolHedge runs live on Solana mainnet with on-chain settlement and transparent positions.',
+    a: 'Yes. SolHedge runs on Solana mainnet at app.solhedge.xyz.',
   },
 ]
 
 export function FAQ() {
-  const [open, setOpen] = useState<number | null>(0)
-
   return (
-    <section id="faq" className="relative px-6 py-20">
+    <section id="faq" className="relative px-6 py-24">
       <div className="mx-auto max-w-3xl">
         <div className="text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-brand-cyan">FAQ</p>
-          <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
-            Questions, answered.
+          <h2 className="font-display text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
+            Questions,
+            <span className="text-gradient-brand block">answered.</span>
           </h2>
         </div>
 
         <div className="mt-14 space-y-3">
-          {FAQS.map((f, i) => {
-            const isOpen = open === i
-            return (
-              <div
-                key={f.q}
-                className="overflow-hidden rounded-2xl border border-white/[0.06] bg-white/[0.02] transition-colors hover:border-white/[0.12]"
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  className="flex w-full items-center justify-between gap-4 px-6 py-5 text-left"
-                >
-                  <span className="font-display text-base font-medium tracking-tight sm:text-lg">{f.q}</span>
-                  <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-surface-800 transition-transform ${isOpen ? 'rotate-45' : ''}`}>
-                    <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-text-secondary" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M12 5v14M5 12h14" />
-                    </svg>
-                  </span>
-                </button>
-                {isOpen && (
-                  <div className="px-6 pb-6 font-body text-sm text-text-secondary">
-                    {f.a}
-                  </div>
-                )}
-              </div>
-            )
-          })}
+          {FAQS.map((f, i) => (
+            <details
+              key={f.q}
+              name="faq"
+              open={i === 0}
+              className="group rounded-2xl border border-white/[0.06] bg-white/[0.02] transition-colors duration-100 hover:border-white/[0.12]"
+            >
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-2xl px-6 py-5 text-left [&::-webkit-details-marker]:hidden">
+                <span className="font-display text-base font-medium tracking-tight sm:text-lg">{f.q}</span>
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-white/[0.08] bg-surface-800 transition-transform duration-150 ease-out group-open:rotate-45" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 text-text-secondary" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </span>
+              </summary>
+              <p className="px-6 pb-6 font-body text-sm text-text-secondary sm:text-base">{f.a}</p>
+            </details>
+          ))}
         </div>
       </div>
     </section>

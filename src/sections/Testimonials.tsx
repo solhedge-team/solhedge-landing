@@ -26,9 +26,9 @@ export function Testimonials() {
     <section id="testimonials" className="relative px-6 py-20">
       <div className="mx-auto max-w-6xl">
         <div className="text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-brand-cyan">Testimonials</p>
-          <h2 className="mt-4 font-display text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl">
-            Trusted by Crypto<br />Enthusiasts Worldwide
+          <h2 className="font-display text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
+            Trusted by crypto
+            <span className="text-gradient-brand block">enthusiasts worldwide</span>
           </h2>
         </div>
 
