@@ -183,7 +183,11 @@ export function BinsScene() {
     let labelledActive = CENTER_BIN
     let labelledPriceUsd = CENTER_PRICE_USD
     let labelledRangeCenter = CENTER_BIN
+    let labelledRangeSliding = false
     const placeLabels = () => {
+      // Hidden mid-slide: the bins easing out past the new edge would run under the labels.
+      const rangeLabelOpacity = labelledRangeSliding ? '0' : '1'
+      rangeLowLabel.style.opacity = rangeHighLabel.style.opacity = rangeLabelOpacity
       pin(rangeLowLabel, xOf(labelledRangeCenter - RANGE_HALF) - BIN_WIDTH / 2, 0)
       pin(rangeHighLabel, xOf(labelledRangeCenter + RANGE_HALF) + BIN_WIDTH / 2, 0)
       pin(priceLabel, xOf(labelledActive), bars[labelledActive].scale.y + 0.12)
@@ -305,6 +309,7 @@ export function BinsScene() {
       labelledActive = active
       labelledPriceUsd = priceUsd
       labelledRangeCenter = rangeCenter
+      labelledRangeSliding = Math.abs(rangeTarget - rangeCenter) > 0.5
       placeLabels()
       if (!reduced) raf = requestAnimationFrame(frame)
     }
@@ -330,10 +335,10 @@ export function BinsScene() {
         aria-label="Animated Meteora DLMM liquidity bins. Bins above the floor hold SOL or USDC and re-centre when price nears the range edge. Purple bars below mirror the hedge short."
       />
       <div aria-hidden="true" className="pointer-events-none font-mono text-[11px] tabular-nums">
-        <span ref={rangeLowRef} className="absolute left-0 top-0 -ml-2 whitespace-nowrap text-text-muted [translate:-100%_-50%]">
+        <span ref={rangeLowRef} className="absolute left-0 top-0 -ml-2 whitespace-nowrap transition-opacity duration-300 text-text-muted [translate:-100%_-50%]">
           {usd(readout.rangeLowUsd)}
         </span>
-        <span ref={rangeHighRef} className="absolute left-0 top-0 ml-2 whitespace-nowrap text-text-muted [translate:0_-50%]">
+        <span ref={rangeHighRef} className="absolute left-0 top-0 ml-2 whitespace-nowrap transition-opacity duration-300 text-text-muted [translate:0_-50%]">
           {usd(readout.rangeHighUsd)}
         </span>
         <span
