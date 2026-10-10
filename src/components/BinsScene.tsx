@@ -5,7 +5,11 @@ import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment
 const BIN_COUNT = 41
 const CENTER_BIN = 20
 const BIN_WIDTH = 0.16
-const VIEW_HALF_HEIGHT = 2.7
+// World-space box the bins and shorts occupy on screen, padded for the sway.
+const SCENE_WIDTH = 6.8
+const SCENE_HEIGHT = 2.6
+// At lg the canvas spans the whole hero, so the scene sits in the right half beside the copy.
+const WIDE_MIN_PX = 1024
 // ponytail: illustrative scale only, not a live position
 const SOL_PER_UNIT_HEIGHT = 12.4
 
@@ -31,7 +35,7 @@ export function BinsScene() {
 
     const camera = new THREE.OrthographicCamera()
     camera.position.set(3.2, 2.4, 9)
-    camera.lookAt(0.5, -0.2, 0)
+    camera.lookAt(0, 0.15, 0)
 
     const cyan = new THREE.Color('#22d3ee')
     const violet = new THREE.Color('#7c3aed')
@@ -68,7 +72,7 @@ export function BinsScene() {
     )
     floor.rotation.x = -Math.PI / 2
     scene.add(floor)
-    const grid = new THREE.GridHelper(8, 50, 0x22262d, 0x16181c)
+    const grid = new THREE.GridHelper(30, 190, 0x22262d, 0x16181c)
     grid.position.y = -1.5
     scene.add(grid)
     scene.add(new THREE.AmbientLight(0xffffff, 0.6))
@@ -80,10 +84,18 @@ export function BinsScene() {
       const { clientWidth: w, clientHeight: h } = canvas
       renderer.setSize(w, h, false)
       const aspect = w / h
-      camera.left = -VIEW_HALF_HEIGHT * aspect
-      camera.right = VIEW_HALF_HEIGHT * aspect
-      camera.top = VIEW_HALF_HEIGHT
-      camera.bottom = -VIEW_HALF_HEIGHT
+      const wide = w >= WIDE_MIN_PX
+      // Wide: scene in the right half, raised clear of the readout card.
+      const widthFraction = wide ? 0.55 : 0.92
+      const heightFraction = wide ? 0.45 : 0.8
+      const centerX = wide ? 0.7 : 0.5
+      const centerY = wide ? 0.42 : 0.5
+      const viewWidth = Math.max(SCENE_WIDTH / widthFraction, (SCENE_HEIGHT / heightFraction) * aspect)
+      const viewHeight = viewWidth / aspect
+      camera.left = -centerX * viewWidth
+      camera.right = (1 - centerX) * viewWidth
+      camera.top = centerY * viewHeight
+      camera.bottom = -(1 - centerY) * viewHeight
       camera.updateProjectionMatrix()
       renderer.render(scene, camera)
     }
@@ -134,13 +146,13 @@ export function BinsScene() {
 
   const sol = readout.solHeld.toFixed(1)
   return (
-    <div className="relative sm:h-[min(78svh,720px)]">
+    <div className="relative h-full">
       <canvas
         ref={canvasRef}
-        className="block h-[340px] w-full sm:h-full"
+        className="block h-[340px] w-full sm:h-[460px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_55%,transparent_100%)] lg:h-full lg:[mask-image:radial-gradient(ellipse_50%_55%_at_70%_42%,#000_55%,transparent_100%)]"
         aria-label="Animated Meteora DLMM liquidity bins. Bins above the floor hold SOL or USDC. Purple bars below mirror the hedge short."
       />
-      <div className="ml-auto mt-4 w-60 sm:absolute sm:bottom-6 sm:right-7 sm:mt-0 rounded-2xl border border-white/10 bg-surface-800/75 p-4 backdrop-blur">
+      <div className="ml-auto mt-4 w-64 rounded-2xl border border-white/10 bg-surface-800/75 p-4 backdrop-blur lg:absolute lg:bottom-16 lg:right-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] lg:mt-0">
         <p className="mb-2 font-mono text-xs text-text-muted">Illustrative position</p>
         <dl className="font-mono text-[13px] font-medium tabular-nums">
           <div className="flex justify-between py-1.5"><dt className="text-text-secondary">Active bin</dt><dd>#{8400 + readout.activeBin}</dd></div>
@@ -148,12 +160,12 @@ export function BinsScene() {
           <div className="flex justify-between border-t border-white/10 py-1.5"><dt className="text-[#a78bfa]">Perp short</dt><dd>−{sol} SOL</dd></div>
           <div className="flex justify-between border-t border-white/10 py-1.5"><dt>Net exposure</dt><dd>≈ 0.0 SOL</dd></div>
         </dl>
+        <ul className="mt-3 flex gap-3 border-t border-white/10 pt-3 font-mono text-[11px] text-text-muted">
+          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#22d3ee]" />SOL bins</li>
+          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#3a3e47]" />USDC bins</li>
+          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#a78bfa]" />Short</li>
+        </ul>
       </div>
-      <ul className="mt-4 flex gap-4 sm:absolute sm:bottom-6 sm:left-6 sm:mt-0 font-mono text-xs text-text-muted">
-        <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-sm bg-[#22d3ee]" />SOL bins</li>
-        <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-sm bg-[#3a3e47]" />USDC bins</li>
-        <li className="flex items-center gap-2"><span className="h-2.5 w-2.5 rounded-sm bg-[#a78bfa]" />Short</li>
-      </ul>
     </div>
   )
 }

@@ -20,12 +20,11 @@ const rise = (delay: number) => ({
 })
 
 export function Hero() {
-
   return (
     <section id="top" className="relative">
       <div className="relative flex min-h-svh flex-col">
         <div className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-10 px-6 pb-12 pt-32 sm:px-10 lg:grid-cols-[5fr_7fr] lg:pt-28">
-          <div>
+          <div className="relative z-10">
             <motion.p
               {...rise(0)}
               className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-text-secondary"
@@ -80,14 +79,19 @@ export function Hero() {
             </motion.div>
           </div>
 
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.2 }}>
-            <Suspense fallback={<div className="h-[340px] sm:h-[min(78svh,720px)]" />}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="lg:absolute lg:inset-0"
+          >
+            <Suspense fallback={<div className="h-[340px] sm:h-[460px] lg:h-full" />}>
               <BinsScene />
             </Suspense>
           </motion.div>
         </div>
 
-        <p className="mx-auto w-full max-w-7xl px-6 pb-6 font-mono text-[11px] uppercase tracking-wider text-text-muted sm:px-10">
+        <p className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-6 font-mono text-[11px] uppercase tracking-wider text-text-muted sm:px-10">
           Non-custodial · Pen-tested by Daemon · Not financial advice
         </p>
       </div>
