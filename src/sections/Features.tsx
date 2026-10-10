@@ -7,6 +7,7 @@ const FEATURES = [
     title: 'Protection that shows up when it matters',
     desc: 'Opens offsetting positions on Jupiter Perps and Phoenix to cut impermanent loss and directional exposure. It fires on confirmed, high-confidence risk events, not on every wick.',
     rails: ['Jupiter Perps', 'Phoenix'],
+    shot: { src: '/app/hedge.webp', url: 'app.solhedge.xyz/escrow', label: 'Hedge position card showing a HYPE short on Phoenix' },
     icon: <path d="M12 3 5 6v5.5c0 4.5 3 8.3 7 9.5 4-1.2 7-5 7-9.5V6l-7-3Z" />,
   },
   {
@@ -14,6 +15,7 @@ const FEATURES = [
     title: 'Liquidity stays where the trades are',
     desc: 'The AI moves your DLMM range boundaries using volatility and momentum signals, so capital earns fees instead of sitting out of range.',
     rails: ['Meteora DLMM'],
+    shot: { src: '/app/range.webp', url: 'app.solhedge.xyz/escrow', label: 'Position P&L card with fees earned on a JUP-SOL position' },
     icon: <path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4" />,
   },
   {
@@ -21,6 +23,7 @@ const FEATURES = [
     title: 'Fee efficiency as price moves',
     desc: 'Liquidity is redistributed inside your range as the market shifts. No closing and reopening positions by hand.',
     rails: ['Meteora DLMM', 'Jupiter'],
+    shot: { src: '/app/rebalance.webp', url: 'app.solhedge.xyz/escrow', label: 'Activity log showing LP positions closed and reopened automatically' },
     icon: <path d="M12 4v16M5 8h14M3 15l2-7 2 7a2.5 2.5 0 0 1-4 0ZM17 15l2-7 2 7a2.5 2.5 0 0 1-4 0Z" />,
   },
   {
@@ -28,6 +31,7 @@ const FEATURES = [
     title: 'Earned fees go straight back to work',
     desc: 'Fees are harvested and reinvested around the clock, with no manual claims and no timing guesswork.',
     rails: ['Meteora DLMM'],
+    shot: { src: '/app/compound.webp', url: 'app.solhedge.xyz/portfolio', label: 'Daily PnL calendar in the portfolio' },
     icon: <path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v4h-4" />,
   },
 ]
@@ -69,7 +73,7 @@ export function Features() {
                 </ul>
               </div>
               <Reveal>
-                <AppShot label={`${f.name} in the app`} />
+                <AppShot {...f.shot} />
               </Reveal>
             </div>
           ))}
