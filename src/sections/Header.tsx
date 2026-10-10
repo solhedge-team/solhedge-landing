@@ -1,66 +1,52 @@
-import { useState } from 'react'
+const APP_URL = 'https://app.solhedge.xyz'
+const DOCS_URL = 'https://docs.solhedge.xyz'
 
-export const APP_URL = 'https://app.solhedge.xyz'
-
-const NAV = [
-  { label: 'How it works', href: '#how-it-works' },
-  { label: 'Strategies', href: '#strategies' },
-  { label: 'Pools', href: '#pools' },
+const NAV_LINKS = [
+  { label: 'Features', href: '#features' },
+  { label: 'Strategy', href: '#strategy' },
+  { label: 'How it works', href: '#how' },
+  { label: 'Security', href: '#security' },
   { label: 'FAQ', href: '#faq' },
 ]
 
 export function Header() {
-  const [open, setOpen] = useState(false)
   return (
-    <header className="sticky top-0 z-50 border-b border-line bg-surface-900/90 backdrop-blur">
-      <div className="wrap flex items-center justify-between py-3.5">
-        <a href="#top" className="flex items-center gap-2.5">
-          <img src="/logo-mini.png" alt="" className="h-6 w-6" />
-          <span className="font-display text-[17px] font-semibold tracking-tight">SolHedge</span>
+    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 sm:pt-6">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 rounded-2xl border border-white/[0.08] bg-surface-900/60 py-2 pl-4 pr-2 shadow-lg shadow-black/20 backdrop-blur-xl">
+        <a href="#top" className="flex items-center gap-1 rounded-lg transition-opacity duration-100 hover:opacity-80">
+          <img src="/logo-mini.png" alt="" width={28} height={28} className="h-7 w-7" />
+          <span className="font-display text-lg font-semibold tracking-tight">SolHedge</span>
         </a>
 
-        <nav aria-label="Primary" className="hidden items-center gap-7 md:flex">
-          {NAV.map((l) => (
-            <a key={l.href} href={l.href} className="text-sm text-text-secondary transition-colors hover:text-text-primary">
-              {l.label}
+        <nav aria-label="Primary" className="hidden items-center gap-1 lg:flex">
+          {NAV_LINKS.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="rounded-full px-3 py-2 font-body text-sm text-text-secondary transition-colors duration-100 hover:text-text-primary"
+            >
+              {link.label}
             </a>
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
-          <a href={APP_URL} className="btn btn-primary hidden !px-4 !py-2 text-sm sm:inline-flex">
+        <div className="flex items-center gap-1">
+          <a
+            href={DOCS_URL}
+            target="_blank"
+            rel="noreferrer"
+            className="hidden h-10 items-center rounded-xl px-4 font-body text-sm text-text-secondary transition-colors duration-100 hover:text-text-primary sm:inline-flex"
+          >
+            Docs
+          </a>
+          <a
+            href={APP_URL}
+            className="inline-flex h-10 items-center rounded-xl bg-white px-5 font-body text-sm font-medium text-surface-900 transition-[background-color,transform] duration-100 hover:bg-text-secondary active:scale-[0.97]"
+          >
             Launch app
           </a>
-          <button
-            type="button"
-            aria-expanded={open}
-            aria-controls="mobile-nav"
-            onClick={() => setOpen((o) => !o)}
-            className="rounded-full border border-surface-600 p-2 md:hidden"
-          >
-            <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
-            <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden>
-              {open ? <path d="M4 4l12 12M16 4L4 16" /> : <path d="M3 6h14M3 10h14M3 14h14" />}
-            </svg>
-          </button>
         </div>
       </div>
-      {open && (
-        <nav id="mobile-nav" aria-label="Primary mobile" className="border-t border-line md:hidden">
-          <ul className="wrap flex flex-col gap-4 py-5">
-            {NAV.map((l) => (
-              <li key={l.href}>
-                <a href={l.href} onClick={() => setOpen(false)} className="text-base text-text-secondary">
-                  {l.label}
-                </a>
-              </li>
-            ))}
-            <li>
-              <a href={APP_URL} className="btn btn-primary">Launch app</a>
-            </li>
-          </ul>
-        </nav>
-      )}
     </header>
   )
 }

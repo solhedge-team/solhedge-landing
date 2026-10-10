@@ -1,4 +1,3 @@
-/* Hallmark · genre: modern-minimal · macrostructure: Long Document · theme: custom dark (brand) · enrichment: none · nav: N1 · footer: Ft2 */
 @import "tailwindcss";
 
 @theme {
@@ -6,104 +5,107 @@
   --font-body: "DM Sans", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
-  --color-accent: #22d3ee;
-  --color-accent-soft: rgba(34, 211, 238, 0.14);
-  --color-purple: #a78bfa;
+  --color-brand-purple: #8B5CF6;
+  --color-brand-blue: #3B82F6;
+  --color-brand-cyan: #06B6D4;
+  --color-brand-gold: #F5C451;
 
-  --color-surface-900: #0a0b0d;
-  --color-surface-800: #111216;
-  --color-surface-700: #1a1c21;
-  --color-surface-600: #2a2d34;
+  --color-surface-900: #08090a;
+  --color-surface-800: #0f1011;
+  --color-surface-700: #191a1b;
+  --color-surface-600: #28282c;
 
-  --color-text-primary: #f4f5f7;
-  --color-text-secondary: #c3c8d1;
-  --color-text-muted: #858b96;
-  --color-text-faint: #5c616b;
+  --color-text-primary: #f7f8f8;
+  --color-text-secondary: #d0d6e0;
+  --color-text-muted: #8a8f98;
+  --color-text-faint: #62666d;
 
-  --color-success: #4ade80;
-  --color-error: #f87171;
-
-  --color-line: rgba(255, 255, 255, 0.1);
+  --color-success: #22C55E;
+  --color-warning: #EAB308;
+  --color-error: #EF4444;
 }
 
-html { scroll-behavior: smooth; overflow-x: clip; }
-
 body {
-  margin: 0;
-  overflow-x: clip;
   font-family: var(--font-body);
   background-color: var(--color-surface-900);
   color: var(--color-text-primary);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  margin: 0;
 }
 
-#root { min-height: 100svh; }
-
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 3px;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 h1, h2, h3 {
-  font-family: var(--font-display);
-  overflow-wrap: anywhere;
-  min-width: 0;
+  text-wrap: balance;
 }
 
-.wrap { margin-inline: auto; max-width: 72rem; padding-inline: 1.5rem; }
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  border-radius: 9999px;
-  padding: 0.75rem 1.375rem;
-  font-family: var(--font-body);
-  font-size: 0.9375rem;
-  font-weight: 500;
-  line-height: 1.2;
-  white-space: nowrap;
-  transition: background-color 160ms cubic-bezier(0.16, 1, 0.3, 1), color 160ms cubic-bezier(0.16, 1, 0.3, 1);
+:focus-visible {
+  outline: 2px solid var(--color-brand-cyan);
+  outline-offset: 3px;
 }
-.btn-primary { background: var(--color-text-primary); color: var(--color-surface-900); }
-.btn-primary:hover { background: #fff; }
-.btn-secondary { border: 1px solid var(--color-surface-600); color: var(--color-text-primary); }
-.btn-secondary:hover { background: var(--color-surface-800); }
-
-.mono {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.02em;
-  color: var(--color-text-muted);
-}
-
-.panel {
-  border: 1px solid var(--color-line);
-  border-radius: 0.75rem;
-  background: var(--color-surface-800);
-}
-
-.num { font-variant-numeric: tabular-nums; }
-
-/* Hedge replay chart */
-.sim-line {
-  stroke-dasharray: var(--len);
-  stroke-dashoffset: var(--len);
-  animation: sim-draw 2.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: var(--delay, 0s);
-}
-.sim-pop {
-  opacity: 0;
-  animation: sim-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-delay: var(--delay, 0s);
-}
-@keyframes sim-draw { to { stroke-dashoffset: 0; } }
-@keyframes sim-pop { to { opacity: 1; } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .sim-line { animation: none; stroke-dashoffset: 0; }
-  .sim-pop { animation: none; opacity: 1; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
+
+#root {
+  min-height: 100svh;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.02;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+}
+
+.grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #f7f8f8 0%, #d0d6e0 50%, #8a8f98 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-brand {
+  background: linear-gradient(90deg, #8B5CF6 0%, #3B82F6 25%, #06B6D4 50%, #3B82F6 75%, #8B5CF6 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.text-gradient-brand-animated {
+  background: linear-gradient(90deg, #8B5CF6 0%, #3B82F6 25%, #06B6D4 50%, #3B82F6 75%, #8B5CF6 100%);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: gradient-pan 7s ease-in-out infinite;
+}
+
+@keyframes gradient-pan {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
