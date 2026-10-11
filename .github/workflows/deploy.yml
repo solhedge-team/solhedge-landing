@@ -69,13 +69,39 @@ jobs:
         with:
           version: v1.31.0
 
-      - name: Ensure GHCR pull secret
+      # ghcr-pull is shared by every service in the namespace and holds a long-lived PAT.
+      # Never overwrite it here: a job-scoped GITHUB_TOKEN expires and breaks every pull.
+      - name: Validate existing GHCR pull credentials
+        env:
+          IMAGE_REF: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tag.outputs.tag }}
+          NAMESPACE: ${{ steps.env.outputs.namespace }}
         run: |
-          kubectl -n "${{ steps.env.outputs.namespace }}" create secret docker-registry ghcr-pull \
-            --docker-server=${{ env.REGISTRY }} \
-            --docker-username=${{ github.actor }} \
-            --docker-password=${{ secrets.GITHUB_TOKEN }} \
-            --dry-run=client -o yaml | kubectl apply -f -
+          secret_dir="$(mktemp -d)"
+          trap 'rm -rf "$secret_dir"' EXIT
+
+          secret_type="$(kubectl -n "$NAMESPACE" get secret ghcr-pull -o jsonpath='{.type}')"
+          if [ "$secret_type" != "kubernetes.io/dockerconfigjson" ]; then
+            echo "::error::ghcr-pull must be a kubernetes.io/dockerconfigjson secret"
+            exit 1
+          fi
+
+          kubectl -n "$NAMESPACE" get secret ghcr-pull \
+            -o jsonpath='{.data.\.dockerconfigjson}' \
+            | base64 --decode > "$secret_dir/config.json"
+          chmod 600 "$secret_dir/config.json"
+
+          if [ ! -s "$secret_dir/config.json" ]; then
+            echo "::error::ghcr-pull contains no Docker registry credentials"
+            exit 1
+          fi
+
+          if ! DOCKER_CONFIG="$secret_dir" docker buildx imagetools inspect "$IMAGE_REF" >/dev/null; then
+            echo "::error::The existing ghcr-pull PAT cannot pull $IMAGE_REF"
+            echo "::error::Grant the PAT read:packages and access to the private solhedge-landing package, then update ghcr-pull"
+            exit 1
+          fi
+
+          echo "Existing ghcr-pull credentials can pull $IMAGE_REF"
 
       - name: Apply manifests
         env:
