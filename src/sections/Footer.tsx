@@ -72,8 +72,8 @@ export function Footer() {
         </div>
 
         <p className="mt-6 max-w-4xl font-body text-xs leading-relaxed text-text-muted">
-          SolHedge is non-custodial software. Hedging reduces risk but does not remove it: smart contract, oracle,
-          liquidity, and counterparty risks apply, and residual impermanent loss can remain. Returns are not guaranteed.
+          SolHedge is a custodial service: it holds the keys to the escrow wallets that run your position. Hedging
+          reduces risk but does not remove it: custody, smart contract, oracle, liquidity, and counterparty risks apply, and residual impermanent loss can remain. Returns are not guaranteed.
           Nothing on this site is financial advice.
         </p>
       </div>

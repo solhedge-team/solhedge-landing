@@ -1,7 +1,7 @@
 const FAQS = [
   {
     q: 'Is SolHedge custodial?',
-    a: 'No. Funds move directly between the liquidity pool and your wallet. The protocol never takes custody of your assets.',
+    a: 'Yes. Each deposit sits in a dedicated escrow wallet. SolHedge holds that wallet\'s private key in an encrypted key management service so it can rebalance, hedge, and compound without asking you to sign every step. Withdrawals return funds to your wallet.',
   },
   {
     q: 'Do I need to understand perps or hedging?',

@@ -8,7 +8,7 @@ const ROWS = [
   { label: 'Range management', values: ['—', 'Manual, constant', 'AI, automatic'] },
   { label: 'Compounding', values: ['—', 'Manual claims', 'Automatic, 24/7'] },
   { label: 'Perps know-how', values: ['Not needed', 'Needed to hedge', 'Not needed'] },
-  { label: 'Custody', values: ['Your wallet', 'Your wallet', 'Your wallet'] },
+  { label: 'Custody', values: ['Your wallet', 'Your wallet', 'SolHedge escrow'] },
 ]
 
 export function Problem() {

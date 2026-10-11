@@ -13,7 +13,7 @@ export function CTA() {
           <span className="text-gradient-brand-animated block pb-1">Let the AI handle the rest.</span>
         </h2>
         <p className="mx-auto mt-6 max-w-xl font-body text-lg text-text-secondary">
-          Connect a wallet, pick a pool, and let the portfolio run. Non-custodial from deposit to withdrawal.
+          Connect a wallet, pick a pool, and let the portfolio run.
         </p>
 
         <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
