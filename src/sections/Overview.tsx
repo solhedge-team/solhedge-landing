@@ -46,11 +46,11 @@ export function Overview() {
                 <div className="max-w-md">
                   <h3 className="font-display text-base font-medium text-text-primary">Custody</h3>
                   <p className="mt-2 font-body text-sm text-text-muted">
-                    Funds move directly between the liquidity pool and your wallet. SolHedge never takes custody.
+                    Each deposit sits in a dedicated escrow wallet. SolHedge holds its key in an encrypted key management service so the engine can act 24/7.
                   </p>
                 </div>
                 <ul className="flex flex-wrap gap-2">
-                  {['Non-custodial', 'Pen-tested by Daemon'].map((b) => (
+                  {['Dedicated escrow', 'Pen-tested by Daemon'].map((b) => (
                     <li key={b} className="rounded-lg border border-white/[0.1] bg-surface-900/60 px-3 py-2 font-display text-sm font-medium text-text-primary">
                       {b}
                     </li>

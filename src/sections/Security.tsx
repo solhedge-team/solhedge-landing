@@ -2,8 +2,8 @@ import { Reveal } from '@/components/Reveal'
 
 const POINTS = [
   {
-    title: 'Non-custodial',
-    desc: 'Funds move directly between the liquidity pool and your wallet. SolHedge never takes custody.',
+    title: 'Dedicated escrow',
+    desc: 'Each deposit gets its own escrow wallet. SolHedge holds its key in an encrypted key management service, never in the app or your browser.',
   },
   {
     title: 'Penetration tested',
@@ -34,8 +34,8 @@ export function Security() {
         <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div className="max-w-2xl">
             <h2 className="font-display text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl md:text-6xl">
-              Your keys.
-              <span className="text-gradient-brand block">Your funds.</span>
+              Held in escrow.
+              <span className="text-gradient-brand block">Visible on-chain.</span>
             </h2>
           </div>
           <a

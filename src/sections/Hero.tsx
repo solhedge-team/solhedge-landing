@@ -92,7 +92,7 @@ export function Hero() {
         </div>
 
         <p className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-6 font-mono text-[11px] uppercase tracking-wider text-text-muted sm:px-10">
-          Non-custodial · Pen-tested by Daemon · Not financial advice
+          Pen-tested by Daemon · Not financial advice
         </p>
       </div>
     </section>
