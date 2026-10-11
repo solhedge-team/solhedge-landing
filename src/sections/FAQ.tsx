@@ -19,7 +19,7 @@ const FAQS = [
   },
   {
     q: 'Is my capital safe?',
-    a: 'Funds stay in audited on-chain escrow accounts you control. SolHedge never custodies your assets. Protected does not mean risk-free — smart contract risk and residual impermanent loss still apply.',
+    a: 'SolHedge is custodial. Each deposit sits in a dedicated escrow wallet whose private key SolHedge holds in an encrypted key management service, so the vault can rebalance and hedge without asking you to sign every step. Protected does not mean risk-free — custody risk, smart contract risk, and residual impermanent loss still apply.',
   },
   {
     q: 'How do I get started?',
