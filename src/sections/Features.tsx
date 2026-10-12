@@ -19,7 +19,7 @@ const FEATURES = [
     title: 'Liquidity stays where the trades are',
     desc: 'The AI moves your DLMM range boundaries using volatility and momentum signals, so capital earns fees instead of sitting out of range.',
     rails: [{ name: 'Meteora DLMM', logo: METEORA }],
-    shot: { src: '/app/range.webp', url: 'app.solhedge.xyz/escrow', label: 'Position P&L card with fees earned on a JUP-SOL position' },
+    shot: { src: '/app/lp-position.webp', url: 'app.solhedge.xyz/portfolio', label: 'JUP-SOL LP position in range, with token holdings and liquidity distribution' },
     icon: <path d="M3 12h18M7 8l-4 4 4 4M17 8l4 4-4 4" />,
   },
   {
@@ -27,7 +27,7 @@ const FEATURES = [
     title: 'Fee efficiency as price moves',
     desc: 'Liquidity is redistributed inside your range as the market shifts. No closing and reopening positions by hand.',
     rails: [{ name: 'Meteora DLMM', logo: METEORA }, { name: 'Jupiter', logo: JUPITER }],
-    shot: { src: '/app/rebalance.webp', url: 'app.solhedge.xyz/escrow', label: 'Activity log showing LP positions closed and reopened automatically' },
+    shot: { src: '/app/pnl-activity.webp', url: 'app.solhedge.xyz/portfolio', label: 'Position P&L with an activity log of LP positions closed, reopened and fees claimed', className: 'mx-auto max-w-[380px]' },
     icon: <path d="M12 4v16M5 8h14M3 15l2-7 2 7a2.5 2.5 0 0 1-4 0ZM17 15l2-7 2 7a2.5 2.5 0 0 1-4 0Z" />,
   },
   {
@@ -35,7 +35,7 @@ const FEATURES = [
     title: 'Earned fees go straight back to work',
     desc: 'Fees are harvested and reinvested around the clock, with no manual claims and no timing guesswork.',
     rails: [{ name: 'Meteora DLMM', logo: METEORA }],
-    shot: { src: '/app/compound.webp', url: 'app.solhedge.xyz/portfolio', label: 'Daily PnL calendar in the portfolio' },
+    shot: { src: '/app/portfolio.webp', url: 'app.solhedge.xyz/portfolio', label: 'Portfolio value up 19.41% over 30 days' },
     icon: <path d="M20 12a8 8 0 1 1-2.3-5.7M20 4v4h-4" />,
   },
 ]
