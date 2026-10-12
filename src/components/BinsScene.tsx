@@ -13,8 +13,7 @@ const SCENE_WIDTH = 5.4
 const SCENE_HEIGHT = 3.2
 // At lg the canvas spans the whole hero, so the scene sits in the right half beside the copy.
 const WIDE_MIN_PX = 1024
-// ponytail: illustrative scale and fee rate only, not a live position or strategy
-const FEE_SOL_PER_BIN_CROSS = 0.012
+// ponytail: illustrative prices only, not a live position or strategy
 const CENTER_PRICE_USD = 155
 const BIN_STEP_BPS = 25
 const SPARK_COUNT = 160
@@ -24,7 +23,7 @@ const priceUsdAt = (bin: number) => CENTER_PRICE_USD * (1 + BIN_STEP_BPS / 10_00
 const usd = (priceUsd: number) => `$${priceUsd.toFixed(2)}`
 const price = (t: number) => CENTER_BIN + Math.sin(t * 0.21) * 17 + Math.sin(t * 0.67) * 4 + Math.sin(t * 1.9) * 0.8
 
-type Readout = { priceUsd: number; rangeLowUsd: number; rangeHighUsd: number; feesSol: number }
+type Readout = { rangeLowUsd: number; rangeHighUsd: number }
 
 export function BinsScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -32,10 +31,8 @@ export function BinsScene() {
   const rangeHighRef = useRef<HTMLSpanElement>(null)
   const priceRef = useRef<HTMLSpanElement>(null)
   const [readout, setReadout] = useState<Readout>({
-    priceUsd: CENTER_PRICE_USD,
     rangeLowUsd: priceUsdAt(CENTER_BIN - RANGE_HALF),
     rangeHighUsd: priceUsdAt(CENTER_BIN + RANGE_HALF),
-    feesSol: 0,
   })
 
   useEffect(() => {
@@ -177,11 +174,11 @@ export function BinsScene() {
       renderer.setSize(w, h, false)
       const aspect = w / h
       const wide = w >= WIDE_MIN_PX
-      // Wide: scene in the right half, raised so the readout card sits just below it.
+      // Wide: scene in the right half, level with the headline.
       const widthFraction = wide ? 0.5 : 0.92
       const heightFraction = wide ? 0.5 : 0.8
       const centerX = wide ? 0.72 : 0.5
-      const centerY = wide ? 0.4 : 0.5
+      const centerY = wide ? 0.48 : 0.5
       const viewWidth = Math.max(SCENE_WIDTH / widthFraction, (SCENE_HEIGHT / heightFraction) * aspect)
       const viewHeight = viewWidth / aspect
       camera.left = -centerX * viewWidth
@@ -200,7 +197,6 @@ export function BinsScene() {
     let smoothedActive = CENTER_BIN
     let rangeTarget = CENTER_BIN
     let rangeCenter = CENTER_BIN
-    let feesSol = 0
     let lastActive = -1
     let raf = 0
     const clock = new THREE.Clock()
@@ -220,7 +216,6 @@ export function BinsScene() {
       const crossed = active !== lastActive
       if (crossed && lastActive >= 0 && !reduced) {
         for (let k = 0; k < 3; k++) spawnSpark(xOf(active), bars[active].scale.y + 0.05)
-        feesSol += FEE_SOL_PER_BIN_CROSS
       }
       if (crossed) touched[active] = 1
 
@@ -264,10 +259,8 @@ export function BinsScene() {
       if (crossed) {
         lastActive = active
         setReadout({
-          priceUsd,
           rangeLowUsd: priceUsdAt(rangeTarget - RANGE_HALF),
           rangeHighUsd: priceUsdAt(rangeTarget + RANGE_HALF),
-          feesSol,
         })
       }
       render()
@@ -294,7 +287,7 @@ export function BinsScene() {
     <div className="relative h-full">
       <canvas
         ref={canvasRef}
-        className="block h-[340px] w-full sm:h-[460px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_55%,transparent_100%)] lg:h-full lg:[mask-image:radial-gradient(ellipse_50%_55%_at_72%_40%,#000_55%,transparent_100%)]"
+        className="block h-[340px] w-full sm:h-[460px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_55%,transparent_100%)] lg:h-full lg:[mask-image:radial-gradient(ellipse_50%_55%_at_72%_48%,#000_55%,transparent_100%)]"
         aria-label="Animated Meteora DLMM liquidity bins. Bins above the floor hold SOL or USDC and re-centre when price nears the range edge. Purple bars below mirror the hedge short."
       />
       <div aria-hidden="true" className="pointer-events-none font-mono text-[11px] tabular-nums">
@@ -308,19 +301,6 @@ export function BinsScene() {
           ref={priceRef}
           className="absolute left-0 top-0 hidden whitespace-nowrap rounded-md border border-white/10 bg-surface-800/80 px-1.5 py-0.5 text-text-primary [translate:-50%_-100%] sm:block"
         />
-      </div>
-      <div className="ml-auto mt-4 w-64 rounded-2xl border border-white/10 bg-surface-800/75 p-4 backdrop-blur lg:absolute lg:left-[72%] lg:top-[66%] lg:mt-0 lg:-translate-x-1/2">
-        <p className="mb-2 font-mono text-xs text-text-muted">Example position</p>
-        <dl className="font-mono text-[13px] font-medium tabular-nums">
-          <div className="flex justify-between py-1.5"><dt className="text-text-secondary">SOL price</dt><dd>{usd(readout.priceUsd)}</dd></div>
-          <div className="flex justify-between border-t border-white/10 py-1.5"><dt className="text-[#4ade80]">Fees earned</dt><dd>+{readout.feesSol.toFixed(3)} SOL</dd></div>
-          <div className="flex justify-between border-t border-white/10 py-1.5"><dt className="text-[#a78bfa]">Price risk</dt><dd>Hedged</dd></div>
-        </dl>
-        <ul className="mt-3 flex gap-3 border-t border-white/10 pt-3 font-mono text-[11px] text-text-muted">
-          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#22d3ee]" />SOL</li>
-          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#3a3e47]" />USDC</li>
-          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#a78bfa]" />Hedge</li>
-        </ul>
       </div>
     </div>
   )
