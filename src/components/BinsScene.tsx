@@ -8,8 +8,8 @@ const BIN_WIDTH = 0.13
 const RANGE_HALF = 15
 // Re-centre once the active bin is this close to the range edge.
 const RANGE_EDGE_BINS = 3
-// World-space box the bins and shorts occupy on screen, padded for the sway.
-const SCENE_WIDTH = 8.6
+// World-space box the in-range bins and shorts occupy on screen, padded for the sway.
+const SCENE_WIDTH = 5.4
 const SCENE_HEIGHT = 3.2
 // At lg the canvas spans the whole hero, so the scene sits in the right half beside the copy.
 const WIDE_MIN_PX = 1024
@@ -100,15 +100,6 @@ export function BinsScene() {
       edges.push(edge)
     }
 
-    const floor = new THREE.Mesh(
-      new THREE.PlaneGeometry(BIN_COUNT * BIN_WIDTH + 0.6, 1),
-      new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.03, side: THREE.DoubleSide }),
-    )
-    floor.rotation.x = -Math.PI / 2
-    // Drawn after the see-through shorts and without depth, so it tints them the same way every frame.
-    floor.material.depthWrite = false
-    floor.renderOrder = 1
-    root.add(floor)
     scene.add(new THREE.AmbientLight(0xffffff, 0.6))
     const sun = new THREE.DirectionalLight(0xffffff, 1.6)
     sun.position.set(3, 6, 4)
@@ -187,10 +178,10 @@ export function BinsScene() {
       const aspect = w / h
       const wide = w >= WIDE_MIN_PX
       // Wide: scene in the right half, raised so the readout card sits just below it.
-      const widthFraction = wide ? 0.55 : 0.92
-      const heightFraction = wide ? 0.45 : 0.8
-      const centerX = wide ? 0.7 : 0.5
-      const centerY = wide ? 0.42 : 0.5
+      const widthFraction = wide ? 0.5 : 0.92
+      const heightFraction = wide ? 0.5 : 0.8
+      const centerX = wide ? 0.72 : 0.5
+      const centerY = wide ? 0.4 : 0.5
       const viewWidth = Math.max(SCENE_WIDTH / widthFraction, (SCENE_HEIGHT / heightFraction) * aspect)
       const viewHeight = viewWidth / aspect
       camera.left = -centerX * viewWidth
@@ -223,6 +214,8 @@ export function BinsScene() {
         rangeTarget = active
       }
       rangeCenter += (rangeTarget - rangeCenter) * (reduced ? 1 : 0.04)
+      // The camera tracks the range, so a re-centre reads as the bins sliding under a fixed frame.
+      root.position.x = -xOf(rangeCenter)
 
       const crossed = active !== lastActive
       if (crossed && lastActive >= 0 && !reduced) {
@@ -301,7 +294,7 @@ export function BinsScene() {
     <div className="relative h-full">
       <canvas
         ref={canvasRef}
-        className="block h-[340px] w-full sm:h-[460px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_55%,transparent_100%)] lg:h-full lg:[mask-image:radial-gradient(ellipse_50%_55%_at_70%_42%,#000_55%,transparent_100%)]"
+        className="block h-[340px] w-full sm:h-[460px] [mask-image:radial-gradient(ellipse_60%_60%_at_50%_50%,#000_55%,transparent_100%)] lg:h-full lg:[mask-image:radial-gradient(ellipse_50%_55%_at_72%_40%,#000_55%,transparent_100%)]"
         aria-label="Animated Meteora DLMM liquidity bins. Bins above the floor hold SOL or USDC and re-centre when price nears the range edge. Purple bars below mirror the hedge short."
       />
       <div aria-hidden="true" className="pointer-events-none font-mono text-[11px] tabular-nums">
@@ -316,7 +309,7 @@ export function BinsScene() {
           className="absolute left-0 top-0 hidden whitespace-nowrap rounded-md border border-white/10 bg-surface-800/80 px-1.5 py-0.5 text-text-primary [translate:-50%_-100%] sm:block"
         />
       </div>
-      <div className="ml-auto mt-4 w-64 rounded-2xl border border-white/10 bg-surface-800/75 p-4 backdrop-blur lg:absolute lg:left-[70%] lg:top-[56%] lg:mt-0 lg:-translate-x-1/2">
+      <div className="ml-auto mt-4 w-64 rounded-2xl border border-white/10 bg-surface-800/75 p-4 backdrop-blur lg:absolute lg:left-[72%] lg:top-[66%] lg:mt-0 lg:-translate-x-1/2">
         <p className="mb-2 font-mono text-xs text-text-muted">Example position</p>
         <dl className="font-mono text-[13px] font-medium tabular-nums">
           <div className="flex justify-between py-1.5"><dt className="text-text-secondary">SOL price</dt><dd>{usd(readout.priceUsd)}</dd></div>
