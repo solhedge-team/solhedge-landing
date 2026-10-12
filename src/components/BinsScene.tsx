@@ -204,7 +204,7 @@ export function BinsScene() {
       composer?.setSize(w, h)
       const aspect = w / h
       const wide = w >= WIDE_MIN_PX
-      // Wide: scene in the right half, raised clear of the readout card.
+      // Wide: scene in the right half, raised so the readout card sits just below it.
       const widthFraction = wide ? 0.55 : 0.92
       const heightFraction = wide ? 0.45 : 0.8
       const centerX = wide ? 0.7 : 0.5
@@ -335,7 +335,7 @@ export function BinsScene() {
           className="absolute left-0 top-0 hidden whitespace-nowrap rounded-md border border-white/10 bg-surface-800/80 px-1.5 py-0.5 text-text-primary [translate:-50%_-100%] sm:block"
         />
       </div>
-      <div className="ml-auto mt-4 w-64 rounded-2xl border border-white/10 bg-surface-800/75 p-4 backdrop-blur lg:absolute lg:bottom-16 lg:right-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] lg:mt-0">
+      <div className="ml-auto mt-4 w-64 rounded-2xl border border-white/10 bg-surface-800/75 p-4 backdrop-blur lg:absolute lg:left-[70%] lg:top-[56%] lg:mt-0 lg:-translate-x-1/2">
         <p className="mb-2 font-mono text-xs text-text-muted">Example position</p>
         <dl className="font-mono text-[13px] font-medium tabular-nums">
           <div className="flex justify-between py-1.5"><dt className="text-text-secondary">SOL price</dt><dd>{usd(readout.priceUsd)}</dd></div>
