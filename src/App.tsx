@@ -19,9 +19,9 @@ export function App() {
   return (
     <MotionConfig reducedMotion="user">
       {!reducedMotion && (
-        <div className="pointer-events-none fixed inset-0 opacity-60" aria-hidden="true">
+        <div className="pointer-events-none fixed inset-0 opacity-50" aria-hidden="true">
           <Suspense fallback={null}>
-            <GradientWaves horizonColor="#8B5CF6" waveColor="#3B82F6" crestColor="#06B6D4" brightness={1.2} height={4} />
+            <GradientWaves horizonColor="#8B5CF6" waveColor="#3B82F6" crestColor="#06B6D4" brightness={0.85} height={4} />
           </Suspense>
         </div>
       )}
