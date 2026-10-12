@@ -11,7 +11,6 @@ spec:
   tls:
     - hosts:
         - solhedge.xyz
-        - www.solhedge.xyz
       secretName: landing-tls
   rules:
     - host: solhedge.xyz
