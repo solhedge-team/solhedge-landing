@@ -11,6 +11,7 @@ const QUOTES = [
   {
     quote: 'Hedged once. Never looked back.',
     author: '@yonathandinata',
+    avatar: '/testimonials/yonathandinata.webp',
     role: 'Algorithmic Trader',
     style: CARD.grid,
     span: 'md:col-span-3',
@@ -18,6 +19,7 @@ const QUOTES = [
   {
     quote: 'Make money when we sleep',
     author: '@Friday_SOL',
+    avatar: '/testimonials/Friday_SOL.webp',
     role: 'Solana OG',
     style: CARD.accent,
     span: 'md:col-span-3',
@@ -25,6 +27,7 @@ const QUOTES = [
   {
     quote: 'Before SolHedge: anxiety, dips, regret. After SolHedge: vibes, yield, peace.',
     author: '@LugasAnegah',
+    avatar: '/testimonials/LugasAnegah.webp',
     role: 'DeFi Enthusiast',
     style: CARD.plain,
     span: 'md:col-span-6',
@@ -54,12 +57,7 @@ export function Testimonials() {
                     <p className="font-body text-base font-semibold text-text-primary">{q.author}</p>
                     <p className="font-body text-sm text-white/80">{q.role}</p>
                   </div>
-                  <div
-                    className="flex size-14 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-brand-purple/60 via-brand-blue/60 to-brand-cyan/60 font-display text-lg font-semibold ring-1 ring-white/15"
-                    aria-hidden="true"
-                  >
-                    {q.author.charAt(1).toUpperCase()}
-                  </div>
+                  <img src={q.avatar} alt="" width={56} height={56} loading="lazy" className="size-14 shrink-0 rounded-xl object-cover ring-1 ring-white/15" />
                 </figcaption>
               </figure>
             </Reveal>
