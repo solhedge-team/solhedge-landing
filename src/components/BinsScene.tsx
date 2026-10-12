@@ -1,10 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
-import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
-import { OutputPass } from 'three/examples/jsm/postprocessing/OutputPass.js'
 
 const BIN_COUNT = 61
 const CENTER_BIN = 30
@@ -17,8 +13,6 @@ const SCENE_WIDTH = 8.6
 const SCENE_HEIGHT = 3.2
 // At lg the canvas spans the whole hero, so the scene sits in the right half beside the copy.
 const WIDE_MIN_PX = 1024
-// Matches --color-surface-900; the canvas is opaque so bloom has a background to bleed into.
-const PAGE_BG = '#08090a'
 // ponytail: illustrative scale and fee rate only, not a live position or strategy
 const FEE_SOL_PER_BIN_CROSS = 0.012
 const CENTER_PRICE_USD = 155
@@ -51,15 +45,13 @@ export function BinsScene() {
     const priceLabel = priceRef.current
     if (!canvas || !rangeLowLabel || !rangeHighLabel || !priceLabel) return
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches
-    // Bloom and parallax only where there's a mouse; touch devices keep the cheaper single pass.
+    // Parallax only where there's a mouse.
     const finePointer = matchMedia('(pointer: fine)').matches
 
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true })
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true })
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2))
     renderer.toneMapping = THREE.ACESFilmicToneMapping
     const scene = new THREE.Scene()
-    scene.background = new THREE.Color(PAGE_BG)
-    scene.fog = new THREE.Fog(PAGE_BG, 7, 15)
     const pmrem = new THREE.PMREMGenerator(renderer)
     scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture
 
@@ -117,9 +109,6 @@ export function BinsScene() {
     floor.material.depthWrite = false
     floor.renderOrder = 1
     root.add(floor)
-    const grid = new THREE.GridHelper(30, 190, 0x22262d, 0x16181c)
-    grid.position.y = -1.5
-    scene.add(grid)
     scene.add(new THREE.AmbientLight(0xffffff, 0.6))
     const sun = new THREE.DirectionalLight(0xffffff, 1.6)
     sun.position.set(3, 6, 4)
@@ -160,16 +149,10 @@ export function BinsScene() {
 
     const touched = new Float32Array(BIN_COUNT)
 
-    let composer: EffectComposer | undefined
-    if (finePointer) {
-      composer = new EffectComposer(renderer)
-      composer.addPass(new RenderPass(scene, camera))
-      composer.addPass(new UnrealBloomPass(new THREE.Vector2(1, 1), 0.35, 0.25, 0.7))
-      composer.addPass(new OutputPass())
-    }
-    const render = () => (composer ? composer.render() : renderer.render(scene, camera))
+    // Transparent so the page background shows through; bloom is omitted because its passes write opaque alpha.
+    const render = () => renderer.render(scene, camera)
 
-    // HTML labels pinned to scene points; text stays crisp and outside the bloom.
+    // HTML labels pinned to scene points so text stays crisp.
     const anchor = new THREE.Vector3()
     const pin = (label: HTMLElement, x: number, y: number) => {
       root.localToWorld(anchor.set(x, y, 0)).project(camera)
@@ -201,7 +184,6 @@ export function BinsScene() {
     const resize = () => {
       const { clientWidth: w, clientHeight: h } = canvas
       renderer.setSize(w, h, false)
-      composer?.setSize(w, h)
       const aspect = w / h
       const wide = w >= WIDE_MIN_PX
       // Wide: scene in the right half, raised so the readout card sits just below it.
@@ -309,7 +291,6 @@ export function BinsScene() {
       cancelAnimationFrame(raf)
       removeEventListener('resize', resize)
       removeEventListener('pointermove', onPointerMove)
-      composer?.dispose()
       dollarTexture.dispose()
       renderer.dispose()
       pmrem.dispose()
