@@ -6,7 +6,6 @@ import { Problem } from '@/sections/Problem'
 import { Features } from '@/sections/Features'
 import { Strategy } from '@/sections/Strategy'
 import { HowItWorks } from '@/sections/HowItWorks'
-import { Security } from '@/sections/Security'
 import { Testimonials } from '@/sections/Testimonials'
 import { FAQ } from '@/sections/FAQ'
 import { CTA } from '@/sections/CTA'
@@ -24,7 +23,6 @@ export function App() {
           <Problem />
           <Strategy />
           <HowItWorks />
-          <Security />
           <Testimonials />
           <FAQ />
           <CTA />

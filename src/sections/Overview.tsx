@@ -2,8 +2,8 @@ import { Reveal } from '@/components/Reveal'
 
 const CARDS = [
   { label: 'Liquidity layer', desc: 'Concentrated liquidity with dynamic, volatility-based fees.', stat: 'Meteora DLMM' },
-  { label: 'Execution rails', desc: 'Spot and perpetuals routing for hedges and rebalances.', stat: 'Jupiter + Phoenix' },
-  { label: 'Always on', desc: 'Range, hedge, rebalance, and compound run without you.', stat: '24/7' },
+  { label: 'Hedge Protection', desc: 'Short the market during bearish market regime for protection.', stat: 'Jupiter + Phoenix' },
+  { label: 'Auto Management', desc: 'Range, hedge, rebalance, and compound run without you.', stat: '24/7' },
 ]
 
 export function Overview() {
@@ -40,24 +40,6 @@ export function Overview() {
                 </div>
               </Reveal>
             ))}
-
-            <Reveal delay={0.18} className="sm:col-span-3">
-              <div className="flex flex-col gap-6 rounded-2xl border border-white/[0.06] bg-gradient-to-r from-white/[0.02] to-brand-cyan/[0.07] p-5 sm:flex-row sm:items-end sm:justify-between">
-                <div className="max-w-md">
-                  <h3 className="font-display text-base font-medium text-text-primary">Custody</h3>
-                  <p className="mt-2 font-body text-sm text-text-muted">
-                    Each deposit sits in a dedicated escrow wallet. SolHedge holds its key in an encrypted key management service so the engine can act 24/7.
-                  </p>
-                </div>
-                <ul className="flex flex-wrap gap-2">
-                  {['Dedicated escrow', 'Pen-tested by Daemon'].map((b) => (
-                    <li key={b} className="rounded-lg border border-white/[0.1] bg-surface-900/60 px-3 py-2 font-display text-sm font-medium text-text-primary">
-                      {b}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Reveal>
           </div>
           <p className="mt-3 font-body text-xs italic text-text-muted">
             Protected isn't risk-free. Hedging reduces risk, but losses and impermanent loss can still happen.

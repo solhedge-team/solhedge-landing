@@ -20,7 +20,6 @@ const WIDE_MIN_PX = 1024
 // Matches --color-surface-900; the canvas is opaque so bloom has a background to bleed into.
 const PAGE_BG = '#08090a'
 // ponytail: illustrative scale and fee rate only, not a live position or strategy
-const SOL_PER_UNIT_HEIGHT = 8.6
 const FEE_SOL_PER_BIN_CROSS = 0.012
 const CENTER_PRICE_USD = 155
 const BIN_STEP_BPS = 25
@@ -31,7 +30,7 @@ const priceUsdAt = (bin: number) => CENTER_PRICE_USD * (1 + BIN_STEP_BPS / 10_00
 const usd = (priceUsd: number) => `$${priceUsd.toFixed(2)}`
 const price = (t: number) => CENTER_BIN + Math.sin(t * 0.21) * 17 + Math.sin(t * 0.67) * 4 + Math.sin(t * 1.9) * 0.8
 
-type Readout = { priceUsd: number; rangeLowUsd: number; rangeHighUsd: number; solHeld: number; feesSol: number; rangeMoves: number }
+type Readout = { priceUsd: number; rangeLowUsd: number; rangeHighUsd: number; feesSol: number }
 
 export function BinsScene() {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -42,9 +41,7 @@ export function BinsScene() {
     priceUsd: CENTER_PRICE_USD,
     rangeLowUsd: priceUsdAt(CENTER_BIN - RANGE_HALF),
     rangeHighUsd: priceUsdAt(CENTER_BIN + RANGE_HALF),
-    solHeld: 0,
     feesSol: 0,
-    rangeMoves: 0,
   })
 
   useEffect(() => {
@@ -230,7 +227,6 @@ export function BinsScene() {
     let smoothedActive = CENTER_BIN
     let rangeTarget = CENTER_BIN
     let rangeCenter = CENTER_BIN
-    let rangeMoves = 0
     let feesSol = 0
     let lastActive = -1
     let raf = 0
@@ -243,7 +239,6 @@ export function BinsScene() {
 
       if (Math.abs(active - rangeTarget) > RANGE_HALF - RANGE_EDGE_BINS) {
         rangeTarget = active
-        rangeMoves++
       }
       rangeCenter += (rangeTarget - rangeCenter) * (reduced ? 1 : 0.04)
 
@@ -254,7 +249,6 @@ export function BinsScene() {
       }
       if (crossed) touched[active] = 1
 
-      let solUnits = 0
       for (let i = 0; i < BIN_COUNT; i++) {
         const inRange = Math.abs(i - rangeCenter) <= RANGE_HALF
         const h = inRange ? 0.2 + 1.35 * Math.exp(-(((i - rangeCenter) / 10) ** 2)) : 0.004
@@ -266,8 +260,6 @@ export function BinsScene() {
         touched[i] *= 0.985
         bar.material.emissive.copy(cyan).multiplyScalar(isActive ? 0.9 : touched[i] * 0.5)
         bar.visible = bar.scale.y > 0.02
-        if (holdsSol) solUnits += h
-        if (isActive) solUnits += h / 2
         const short = shorts[i]
         short.scale.y += ((holdsSol ? h * 0.8 : isActive ? h * 0.4 : 0.001) - short.scale.y) * ease
         short.visible = short.scale.y > 0.01
@@ -300,9 +292,7 @@ export function BinsScene() {
           priceUsd,
           rangeLowUsd: priceUsdAt(rangeTarget - RANGE_HALF),
           rangeHighUsd: priceUsdAt(rangeTarget + RANGE_HALF),
-          solHeld: solUnits * SOL_PER_UNIT_HEIGHT,
           feesSol,
-          rangeMoves,
         })
       }
       render()
@@ -326,7 +316,6 @@ export function BinsScene() {
     }
   }, [])
 
-  const sol = readout.solHeld.toFixed(1)
   return (
     <div className="relative h-full">
       <canvas
@@ -347,20 +336,16 @@ export function BinsScene() {
         />
       </div>
       <div className="ml-auto mt-4 w-64 rounded-2xl border border-white/10 bg-surface-800/75 p-4 backdrop-blur lg:absolute lg:bottom-16 lg:right-[max(2.5rem,calc((100vw-80rem)/2+2.5rem))] lg:mt-0">
-        <p className="mb-2 font-mono text-xs text-text-muted">Illustrative position</p>
+        <p className="mb-2 font-mono text-xs text-text-muted">Example position</p>
         <dl className="font-mono text-[13px] font-medium tabular-nums">
           <div className="flex justify-between py-1.5"><dt className="text-text-secondary">SOL price</dt><dd>{usd(readout.priceUsd)}</dd></div>
-          <div className="flex justify-between border-t border-white/10 py-1.5"><dt className="text-text-secondary">Range</dt><dd>{usd(readout.rangeLowUsd)} – {usd(readout.rangeHighUsd)}</dd></div>
-          <div className="flex justify-between border-t border-white/10 py-1.5"><dt className="text-[#22d3ee]">SOL held</dt><dd>{sol} SOL</dd></div>
-          <div className="flex justify-between border-t border-white/10 py-1.5"><dt className="text-[#a78bfa]">Perp short</dt><dd>−{sol} SOL</dd></div>
-          <div className="flex justify-between border-t border-white/10 py-1.5"><dt>Net exposure</dt><dd>≈ 0.0 SOL</dd></div>
           <div className="flex justify-between border-t border-white/10 py-1.5"><dt className="text-[#4ade80]">Fees earned</dt><dd>+{readout.feesSol.toFixed(3)} SOL</dd></div>
-          <div className="flex justify-between border-t border-white/10 py-1.5"><dt className="text-text-secondary">Range moves</dt><dd>{readout.rangeMoves}</dd></div>
+          <div className="flex justify-between border-t border-white/10 py-1.5"><dt className="text-[#a78bfa]">Price risk</dt><dd>Hedged</dd></div>
         </dl>
         <ul className="mt-3 flex gap-3 border-t border-white/10 pt-3 font-mono text-[11px] text-text-muted">
-          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#22d3ee]" />SOL bins</li>
-          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#3a3e47]" />USDC bins</li>
-          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#a78bfa]" />Short</li>
+          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#22d3ee]" />SOL</li>
+          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#3a3e47]" />USDC</li>
+          <li className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-sm bg-[#a78bfa]" />Hedge</li>
         </ul>
       </div>
     </div>

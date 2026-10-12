@@ -25,15 +25,7 @@ export function Hero() {
       <div className="relative flex min-h-svh flex-col">
         <div className="mx-auto grid w-full max-w-7xl flex-1 items-center gap-10 px-6 pb-12 pt-32 sm:px-10 lg:grid-cols-[5fr_7fr] lg:pt-28">
           <div className="relative z-10">
-            <motion.p
-              {...rise(0)}
-              className="inline-flex items-center gap-2 rounded-full border border-white/[0.1] bg-white/[0.04] px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.18em] text-text-secondary"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-success" aria-hidden="true" />
-              Live on Solana mainnet
-            </motion.p>
-
-            <h1 className="mt-7 font-display text-4xl font-semibold leading-[1.04] tracking-tight sm:text-6xl 2xl:text-7xl">
+            <h1 className="font-display text-4xl font-semibold leading-[1.04] tracking-tight sm:text-6xl 2xl:text-7xl">
               <motion.span {...rise(0.08)} className="block">
                 Earn fees automatically
               </motion.span>
@@ -90,10 +82,6 @@ export function Hero() {
             </Suspense>
           </motion.div>
         </div>
-
-        <p className="relative z-10 mx-auto w-full max-w-7xl px-6 pb-6 font-mono text-[11px] uppercase tracking-wider text-text-muted sm:px-10">
-          Pen-tested by Daemon · Not financial advice
-        </p>
       </div>
     </section>
   )

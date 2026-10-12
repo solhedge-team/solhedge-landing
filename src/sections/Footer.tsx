@@ -5,7 +5,6 @@ const COLUMNS = [
       { label: 'Features', href: '#features' },
       { label: 'Strategy', href: '#strategy' },
       { label: 'How it works', href: '#how' },
-      { label: 'Security', href: '#security' },
       { label: 'FAQ', href: '#faq' },
     ],
   },
@@ -39,11 +38,6 @@ export function Footer() {
             <p className="mt-5 max-w-sm font-body text-sm text-text-muted">
               Automated AI-powered strategy for liquidity providing on Solana.
             </p>
-
-            <div className="mt-6 inline-flex items-center gap-2 rounded-full border border-white/[0.06] bg-white/[0.02] px-3 py-1.5">
-              <span className="font-mono text-[10px] uppercase tracking-wider text-text-muted">Supported by</span>
-              <span className="font-display text-sm font-medium">Superteam Indonesia</span>
-            </div>
           </div>
 
           {COLUMNS.map((col) => (
@@ -66,16 +60,9 @@ export function Footer() {
           ))}
         </div>
 
-        <div className="mt-16 flex flex-col items-start justify-between gap-3 border-t border-white/[0.05] pt-6 sm:flex-row sm:items-center">
+        <div className="mt-16 border-t border-white/[0.05] pt-6">
           <p className="font-body text-xs text-text-muted">© 2026 SolHedge. All rights reserved. Built on Solana.</p>
-          <p className="font-mono text-[10px] uppercase tracking-wider text-text-muted">v2 · mainnet</p>
         </div>
-
-        <p className="mt-6 max-w-4xl font-body text-xs leading-relaxed text-text-muted">
-          SolHedge is a custodial service: it holds the keys to the escrow wallets that run your position. Hedging
-          reduces risk but does not remove it: custody, smart contract, oracle, liquidity, and counterparty risks apply, and residual impermanent loss can remain. Returns are not guaranteed.
-          Nothing on this site is financial advice.
-        </p>
       </div>
     </footer>
   )
