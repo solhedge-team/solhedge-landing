@@ -2,7 +2,8 @@ name: Build & Deploy
 
 on:
   push:
-    branches: [main, staging]
+    # Staging retired 2026-10-24: landing runs in prod only.
+    branches: [main]
   workflow_dispatch:
 
 env:
